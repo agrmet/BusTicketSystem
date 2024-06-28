@@ -1,4 +1,5 @@
 namespace BusTicketSystem.Models;
+using Microsoft.EntityFrameworkCore;
 
 public class Bus : Vehicle
 {
