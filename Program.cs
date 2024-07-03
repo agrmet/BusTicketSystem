@@ -1,5 +1,6 @@
 using BusTicketSystem.Models;
 using BusTicketSystem.Data;
+using BusTicketSystem.Services;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -12,6 +13,7 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddSqlite<TicketSystemContext>(connectionString);
+builder.Services.AddScoped<BusService>();
 
 var app = builder.Build();
 
