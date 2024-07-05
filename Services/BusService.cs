@@ -12,6 +12,7 @@ public class BusService(TicketSystemContext context)
     public IEnumerable<Bus> GetAll()
     {
         return _context.Buses
+        .Include(b => b.Routes)
         .AsNoTracking();
     }
     public Bus? Get(int id)

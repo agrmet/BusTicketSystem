@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 
 public class Bus : Vehicle
 {
-    private List<Route>? Routes;
+    public List<Route>? Routes { get; set; }
 
     public List<Route> AssignRoute(Route route)
     {

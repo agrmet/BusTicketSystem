@@ -4,8 +4,8 @@ public class Route
 {
     public int Id { get; set; }
     public string? Name { get; set; }
-    private List<Stop> Stops = [];
-    private List<Tuple<Stop, Stop>> Edges = [];
+    public List<Stop>? Stops { get; set; }
+    public List<Edge>? Edges { get; set; }
 
     public bool Equals(Route route)
     {
@@ -13,6 +13,11 @@ public class Route
     }
     public List<Stop> AddStop(Stop stop)
     {
+        if (Stops == null)
+        {
+            Stops = [];
+        }
+
         if (Stops.Count < 1)
         {
             Stops.Add(stop);
@@ -22,7 +27,11 @@ public class Route
         Stop lastStop = Stops.Last();
 
         // Create edge
-        Tuple<Stop, Stop> connectedStops = new(lastStop, stop);
+        if (Edges == null)
+        {
+            Edges = [];
+        }
+        var connectedStops = new Edge(lastStop, stop);
 
         // Update route
         Edges.Add(connectedStops);
@@ -31,6 +40,10 @@ public class Route
     }
     public List<Stop> RemoveStop(Stop stop)
     {
+        if (Stops is null)
+        {
+            throw new InvalidOperationException("Cannot remove a stop from an empty route.");
+        }
         if (Stops.Count == 0)
         {
             throw new InvalidOperationException("Cannot remove a stop from an empty route.");
