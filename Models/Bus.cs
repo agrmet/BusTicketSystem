@@ -9,7 +9,7 @@ public class Bus : Vehicle
     {
         if (Routes == null)
         {
-            Routes = new List<Route> { route };
+            Routes = [route];
         }
         else
         {
@@ -19,6 +19,7 @@ public class Bus : Vehicle
     }
     public List<Route> RemoveRoute(Route route)
     {
+        ArgumentNullException.ThrowIfNull(route);
         if (Routes == null)
         {
             throw new InvalidOperationException("This bus has no routes");
@@ -26,10 +27,6 @@ public class Bus : Vehicle
         if (!Routes.Contains(route))
         {
             throw new InvalidOperationException("This route is not assigned to the bus");
-        }
-        if (route == null)
-        {
-            throw new ArgumentNullException("The route to be removed cannot be null");
         }
 
         foreach (var routei in Routes)
