@@ -3,9 +3,16 @@ using BusTicketSystem.Data;
 
 namespace BusTicketSystem.Services;
 
-public class GraphService(TicketSystemContext context)
+public class GraphService
 {
-    private readonly TicketSystemContext _context = context;
+    private readonly TicketSystemContext _context;
+    private Graph _graph { get; set; } = null!;
+
+    public GraphService(TicketSystemContext context)
+    {
+        _context = context;
+        _graph = BuildGraph();
+    }
 
     public Graph BuildGraph()
     {
@@ -15,5 +22,10 @@ public class GraphService(TicketSystemContext context)
         var graph = new Graph(stops, edges, routes);
 
         return graph;
+    }
+
+    public bool GraphExists()
+    {
+        return _graph is not null;
     }
 }

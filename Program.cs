@@ -26,10 +26,7 @@ using (var scope = app.Services.CreateScope())
     var graphService = services.GetRequiredService<GraphService>();
     if (graphService is not null)
     {
-        Console.WriteLine("GraphService exists.");
-        var graph = graphService.BuildGraph();
-        if (graph is null) throw new Exception("Graph is null.");
-        Console.WriteLine("Graph has been built successfully.");
+        if (!graphService.GraphExists()) throw new Exception("Graph is null.");
     }
     else
     {
