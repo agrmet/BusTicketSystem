@@ -18,6 +18,24 @@ builder.Services.AddScoped<GraphService>();
 
 var app = builder.Build();
 
+// Verify that GraphService exists and can build a graph
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+
+    var graphService = services.GetRequiredService<GraphService>();
+    if (graphService is not null)
+    {
+        Console.WriteLine("GraphService exists.");
+        var graph = graphService.BuildGraph();
+        if (graph is null) throw new Exception("Graph is null.");
+        Console.WriteLine("Graph has been built successfully.");
+    }
+    else
+    {
+        throw new ArgumentNullException("GraphService does not exist.");
+    }
+}
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -31,5 +49,7 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
+
+app.CreateDbIfNotExists();
 
 app.Run();
