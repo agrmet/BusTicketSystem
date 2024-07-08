@@ -6,7 +6,7 @@ namespace BusTicketSystem.Services;
 public class GraphService
 {
     private readonly TicketSystemContext _context;
-    private Graph _graph { get; set; } = null!;
+    private Graph _graph;
 
     public GraphService(TicketSystemContext context)
     {
@@ -14,7 +14,7 @@ public class GraphService
         _graph = BuildGraph();
     }
 
-    public Graph BuildGraph()
+    private Graph BuildGraph()
     {
         var edges = _context.Edges.ToHashSet();
         var stops = _context.Stops.ToHashSet();
@@ -28,4 +28,30 @@ public class GraphService
     {
         return _graph is not null;
     }
+
+    public void AddEdge(Edge edge)
+    {
+        _graph.AddEdge(edge);
+    }
+
+    public void RemoveEdge(Edge edge)
+    {
+        _graph.RemoveEdge(edge);
+    }
+
+    public void AddNode(Stop node)
+    {
+        _graph.AddNode(node);
+    }
+
+    public void RemoveNode(Stop node)
+    {
+        _graph.RemoveNode(node);
+    }
+
+    public bool ContainsNode(Stop node)
+    {
+        return _graph.ContainsNode(node);
+    }
+
 }
