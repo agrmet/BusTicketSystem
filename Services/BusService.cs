@@ -12,15 +12,12 @@ public class BusService(TicketSystemContext context)
     {
         return _context.Buses
         .Include(b => b.Routes)
-        .AsNoTracking();
+        .AsNoTracking()
+        .ToList();
     }
     public Bus? Get(int id)
     {
         return _context.Buses
-        .Include(b => b.Id)
-        .Include(b => b.Capacity)
-        .Include(b => b.Model)
-        .Include(b => b.Routes)
         .AsNoTracking()
         .SingleOrDefault(b => b.Id == id);
 

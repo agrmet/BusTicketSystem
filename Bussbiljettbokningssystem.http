@@ -4,3 +4,13 @@ GET {{Bussbiljettbokningssystem_HostAddress}}/bus/
 Accept: application/json
 
 ###
+
+GET {{Bussbiljettbokningssystem_HostAddress}}/stop/
+Accept: application/json
+
+###
+
+GET {{Bussbiljettbokningssystem_HostAddress}}/route/
+Accept: application/json
+
+###

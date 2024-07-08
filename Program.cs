@@ -14,6 +14,8 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddSqlite<TicketSystemContext>(connectionString);
 builder.Services.AddScoped<BusService>();
+builder.Services.AddScoped<RouteService>();
+builder.Services.AddScoped<StopService>();
 builder.Services.AddScoped<GraphService>();
 
 var app = builder.Build();
@@ -35,11 +37,9 @@ using (var scope = app.Services.CreateScope())
 }
 
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+
+app.UseSwagger();
+app.UseSwaggerUI();
 
 app.UseHttpsRedirection();
 
