@@ -1,7 +1,6 @@
 using BusTicketSystem.Models;
 using BusTicketSystem.Data;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.Mvc;
 
 namespace BusTicketSystem.Services;
 

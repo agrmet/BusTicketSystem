@@ -3,12 +3,12 @@ public class Edge
 {
     public Edge() { } // Parameterless constructor
     public int Id { get; set; }
-    public Stop? PreviousStop { get; set; }
-    public Stop? NextStop { get; set; }
+    public Stop? Start { get; set; }
+    public Stop? End { get; set; }
 
-    public Edge(Stop previousStop, Stop nextStop)
+    public Edge(Stop start, Stop end)
     {
-        PreviousStop = previousStop;
-        NextStop = nextStop;
+        Start = start;
+        End = end;
     }
 }

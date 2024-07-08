@@ -3,6 +3,7 @@ using System;
 using BusTicketSystem.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Bussbiljettbokningssystem.Migrations
 {
     [DbContext(typeof(TicketSystemContext))]
-    partial class TicketSystemContextModelSnapshot : ModelSnapshot
+    [Migration("20240708085513_Edges")]
+    partial class Edges
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "8.0.6");
@@ -40,22 +43,22 @@ namespace Bussbiljettbokningssystem.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<int?>("EndId")
+                    b.Property<int?>("NextStopId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int?>("PreviousStopId")
                         .HasColumnType("INTEGER");
 
                     b.Property<int?>("RouteId")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int?>("StartId")
-                        .HasColumnType("INTEGER");
-
                     b.HasKey("Id");
 
-                    b.HasIndex("EndId");
+                    b.HasIndex("NextStopId");
+
+                    b.HasIndex("PreviousStopId");
 
                     b.HasIndex("RouteId");
-
-                    b.HasIndex("StartId");
 
                     b.ToTable("Edges");
                 });
@@ -106,21 +109,21 @@ namespace Bussbiljettbokningssystem.Migrations
 
             modelBuilder.Entity("BusTicketSystem.Models.Edge", b =>
                 {
-                    b.HasOne("BusTicketSystem.Models.Stop", "End")
+                    b.HasOne("BusTicketSystem.Models.Stop", "NextStop")
                         .WithMany()
-                        .HasForeignKey("EndId");
+                        .HasForeignKey("NextStopId");
+
+                    b.HasOne("BusTicketSystem.Models.Stop", "PreviousStop")
+                        .WithMany()
+                        .HasForeignKey("PreviousStopId");
 
                     b.HasOne("BusTicketSystem.Models.Route", null)
                         .WithMany("Edges")
                         .HasForeignKey("RouteId");
 
-                    b.HasOne("BusTicketSystem.Models.Stop", "Start")
-                        .WithMany()
-                        .HasForeignKey("StartId");
+                    b.Navigation("NextStop");
 
-                    b.Navigation("End");
-
-                    b.Navigation("Start");
+                    b.Navigation("PreviousStop");
                 });
 
             modelBuilder.Entity("BusTicketSystem.Models.Route", b =>

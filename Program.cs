@@ -14,6 +14,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddSqlite<TicketSystemContext>(connectionString);
 builder.Services.AddScoped<BusService>();
+builder.Services.AddScoped<GraphService>();
 
 var app = builder.Build();
 

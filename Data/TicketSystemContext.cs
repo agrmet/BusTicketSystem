@@ -8,4 +8,5 @@ public class TicketSystemContext(DbContextOptions options) : DbContext(options)
     // 'Route' is an ambiguous reference between 'BusTicketSystem.Models.Route' and 'Microsoft.AspNetCore.Routing.Route'
     public DbSet<Models.Route> Routes { get; set; } = null!;
     public DbSet<Stop> Stops { get; set; } = null!;
+    public DbSet<Edge> Edges { get; set; } = null!;
 }
