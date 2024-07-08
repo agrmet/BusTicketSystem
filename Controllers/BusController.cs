@@ -53,6 +53,7 @@ public class BusController(BusService service) : ControllerBase
     }
 
     // DELETE action
+    [HttpDelete("{id}")]
     public IActionResult Delete(int id)
     {
         var bus = Get(id);
@@ -79,7 +80,6 @@ public class BusController(BusService service) : ControllerBase
 
     // DELETE action
     [HttpDelete("{id}/remove-route")]
-
     public IActionResult RemoveRoute(int id, Models.Route route)
     {
         var bus = _service.Get(id);
