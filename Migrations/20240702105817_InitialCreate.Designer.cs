@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace Bussbiljettbokningssystem.Migrations
+namespace BusTicketSystem.Migrations
 {
     [DbContext(typeof(TicketSystemContext))]
     [Migration("20240702105817_InitialCreate")]

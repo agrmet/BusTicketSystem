@@ -1,16 +1,16 @@
-@Bussbiljettbokningssystem_HostAddress = http://localhost:5001
+@BusTicketSystem_HostAddress = http://localhost:5001
 
-GET {{Bussbiljettbokningssystem_HostAddress}}/bus/
+GET {{BusTicketSystem_HostAddress}}/bus/
 Accept: application/json
 
 ###
 
-GET {{Bussbiljettbokningssystem_HostAddress}}/stop/
+GET {{BusTicketSystem_HostAddress}}/stop/
 Accept: application/json
 
 ###
 
-GET {{Bussbiljettbokningssystem_HostAddress}}/route/
+GET {{BusTicketSystem_HostAddress}}/route/
 Accept: application/json
 
 ###

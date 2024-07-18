@@ -2,7 +2,7 @@
 
 #nullable disable
 
-namespace Bussbiljettbokningssystem.Migrations
+namespace BusTicketSystem.Migrations
 {
     /// <inheritdoc />
     public partial class InitialCreate : Migration
