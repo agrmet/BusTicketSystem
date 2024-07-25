@@ -2,7 +2,7 @@ using BusTicketSystem.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace BusTicketSystem.Data;
-public class TicketSystemContext(DbContextOptions options) : DbContext(options)
+public class TicketSystemContext(DbContextOptions<TicketSystemContext> options) : DbContext(options)
 {
     public DbSet<Bus> Buses { get; set; } = null!;
     // 'Route' is an ambiguous reference between 'BusTicketSystem.Models.Route' and 'Microsoft.AspNetCore.Routing.Route'

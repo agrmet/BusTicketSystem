@@ -1,4 +1,4 @@
-namespace BusTicketSystem.Data;
+namespace BusTicketSystem.Data.Extensions;
 
 public static class Extensions
 {
