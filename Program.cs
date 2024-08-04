@@ -34,6 +34,7 @@ builder.Services.AddScoped<BusService>();
 builder.Services.AddScoped<RouteService>();
 builder.Services.AddScoped<StopService>();
 builder.Services.AddScoped<GraphService>();
+builder.Services.AddScoped<TicketService>();
 
 var app = builder.Build();
 

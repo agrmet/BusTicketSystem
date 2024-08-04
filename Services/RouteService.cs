@@ -17,9 +17,7 @@ public class RouteService(TicketSystemContext context)
     public Models.Route? Get(int id)
     {
         return _context.Routes
-        .Include(r => r.Id)
-        .Include(r => r.Name)
-        .Include(r => r.Edges)
+        .Include(r => r.Stops)
         .AsNoTracking()
         .SingleOrDefault(r => r.Id == id);
 

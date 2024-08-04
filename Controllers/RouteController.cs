@@ -11,10 +11,7 @@ public class RouteController(RouteService routeService) : ControllerBase
     private RouteService _routeService = routeService;
 
     [HttpGet]
-    public IActionResult Get()
-    {
-        return Ok(_routeService.GetAll());
-    }
+    public ActionResult<List<Models.Route>> Get() => routeService.GetAll().ToList();
 
     [HttpGet("{id}")]
     public IActionResult Get(int id)

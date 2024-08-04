@@ -1,6 +1,7 @@
 using BusTicketSystem.Models;
 using BusTicketSystem.Data;
 using Microsoft.EntityFrameworkCore;
+using System.Text.Json.Serialization.Metadata;
 
 namespace BusTicketSystem.Services;
 
@@ -11,13 +12,19 @@ public class BusService(TicketSystemContext context)
     public IEnumerable<Bus> GetAll()
     {
         return _context.Buses
-        .Include(b => b.Routes)
-        .AsNoTracking()
-        .ToList();
+            .Include(b => b.Routes)
+                .ThenInclude(r => r.Edges)
+            .Include(b => b.Routes)
+                .ThenInclude(r => r.Stops)
+            .AsNoTracking()
+            .ToList();
     }
+
     public Bus? Get(int id)
     {
         return _context.Buses
+        .Include(b => b.Routes)
+            .ThenInclude(r => r.Edges)
         .AsNoTracking()
         .SingleOrDefault(b => b.Id == id);
 

@@ -30,7 +30,6 @@ public static class DbInitializer
         };
 
         context.AddRange(stops);
-        context.SaveChanges();
 
         var edges = new Edge[]
         {
@@ -47,31 +46,29 @@ public static class DbInitializer
         };
 
         context.AddRange(edges);
-        context.SaveChanges();
 
         var routes = new Models.Route[]
         {
             new () {
                 Name = "Sweden - Macedonia",
                 Stops = [stops[0], stops[1], stops[2], stops[3], stops[4], stops[5], stops[6], stops[7], stops[8]],
-                Edges=[edges[0], edges[1], edges[2], edges[3], edges[4], edges[5], edges[6], edges[7]]},
-            new () {
+                Edges= [edges[0], edges[1], edges[2], edges[3], edges[4], edges[5], edges[6], edges[7]]},
+            /* new () {
                 Name = "Sweden - Albania",
                 Stops = [stops[0], stops[1], stops[2], stops[3], stops[4], stops[5], stops[6], stops[7], stops[8], stops[9]],
-                Edges=[edges[0], edges[1], edges[2], edges[3], edges[4], edges[5], edges[6], edges[7], edges[8]]},
+                Edges= [edges[0], edges[1], edges[2], edges[3], edges[4], edges[5], edges[6], edges[7], edges[8]]},
             new () {
                 Name = "Sweden - Kosovo",
                 Stops = [stops[0], stops[1], stops[2], stops[3], stops[4], stops[5], stops[6], stops[7], stops[8], stops[9], stops[10]],
                 Edges = [edges[0], edges[1], edges[2], edges[3], edges[4], edges[5], edges[6], edges[7], edges[8], edges[9]]}
-        };
+         */};
 
         context.AddRange(routes);
-        context.SaveChanges();
 
         var buses = new Bus[]
         {
-            new () {Capacity = 40, Model = "Volvo", Routes = [routes[0], routes[2]]},
-            new () {Capacity = 30, Model = "Mercedes", Routes = [routes[1], routes[2]]},
+            new () {Capacity = 40, Model = "Volvo", Routes = [routes[0]]},
+            new () {Capacity = 30, Model = "Mercedes", Routes = [routes[0]]}
         };
         context.AddRange(buses);
         context.SaveChanges();
