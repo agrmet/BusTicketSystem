@@ -16,26 +16,21 @@ public class Bus : Vehicle
         }
         return Routes;
     }
-    public List<Route> RemoveRoute(Route route)
+    public List<Route> RemoveRoute(int routeId)
     {
-        ArgumentNullException.ThrowIfNull(route);
+        ArgumentNullException.ThrowIfNull(routeId);
         if (Routes == null)
         {
             throw new InvalidOperationException("This bus has no routes");
         }
-        if (!Routes.Contains(route))
+        foreach (Models.Route route in Routes)
         {
-            throw new InvalidOperationException("This route is not assigned to the bus");
-        }
-
-        foreach (var routei in Routes)
-        {
-            if (routei.Equals(route))
+            if (route.Id == routeId)
             {
-                Routes.Remove(routei);
-                break;
+                Routes.Remove(route);
+                return Routes;
             }
         }
-        return Routes;
+        throw new InvalidOperationException("This bus does not have this route");
     }
 }

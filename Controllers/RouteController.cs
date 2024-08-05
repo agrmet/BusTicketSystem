@@ -6,17 +6,24 @@ namespace BusTicketSystem.Controllers;
 
 [ApiController]
 [Route("[controller]")]
-public class RouteController(RouteService routeService) : ControllerBase
+public class RouteController : ControllerBase
 {
-    private RouteService _routeService = routeService;
+    private RouteService _service;
+    private GraphService _graphService;
+
+    public RouteController(RouteService routeService, GraphService graphService)
+    {
+        _service = routeService;
+        _graphService = graphService;
+    }
 
     [HttpGet]
-    public ActionResult<List<Models.Route>> Get() => routeService.GetAll().ToList();
+    public ActionResult<List<Models.Route>> Get() => _service.GetAll().ToList();
 
     [HttpGet("{id}")]
     public IActionResult Get(int id)
     {
-        var route = _routeService.Get(id);
+        var route = _service.Get(id);
         if (route is null)
         {
             return NotFound();
@@ -27,64 +34,52 @@ public class RouteController(RouteService routeService) : ControllerBase
     [HttpPost]
     public IActionResult Create(Models.Route route)
     {
-        return Ok(_routeService.Create(route));
+        var returnRoute = _service.Create(route);
+
+        return CreatedAtAction(nameof(Get), new { id = route.Id }, route);
     }
 
     [HttpPut]
     public IActionResult Update(Models.Route route)
     {
-        _routeService.Update(route);
+        _service.Update(route);
         return Ok();
     }
 
     [HttpDelete("{id}")]
     public IActionResult Delete(int id)
     {
-        _routeService.Delete(id);
-        return Ok();
+        var route = _service.Get(id);
+        if (route is null)
+        {
+            return NotFound();
+        }
+        _service.Delete(id);
+        return NoContent();
     }
 
     [HttpPost("{id}/stops")]
-    public IActionResult AddStop(int id, Stop stop)
+    public IActionResult AddStop(int id, int stopId)
     {
-        var route = _routeService.Get(id);
+        var route = _service.Get(id);
         if (route is null)
         {
             return NotFound();
         }
-        return Ok(_routeService.AddStop(id, stop));
+        _service.AddStop(id, stopId);
+        return NoContent();
     }
 
     [HttpDelete("{id}/stops")]
-    public IActionResult RemoveStop(int id, Stop stop)
+    public IActionResult RemoveStop(int id, int stopId)
     {
-        var route = _routeService.Get(id);
+        var route = _service.Get(id);
         if (route is null)
         {
             return NotFound();
         }
-        return Ok(_routeService.RemoveStop(id, stop));
-    }
 
-    [HttpPost("{id}/edges")]
-    public IActionResult AddEdge(int id, Edge edge)
-    {
-        var route = _routeService.Get(id);
-        if (route is null)
-        {
-            return NotFound();
-        }
-        return Ok(_routeService.AddEdge(id, edge));
-    }
-
-    [HttpDelete("{id}/edges")]
-    public IActionResult RemoveEdge(int id, Edge edge)
-    {
-        var route = _routeService.Get(id);
-        if (route is null)
-        {
-            return NotFound();
-        }
-        return Ok(_routeService.RemoveEdge(id, edge));
+        _service.RemoveStop(id, stopId);
+        return NoContent();
     }
 }

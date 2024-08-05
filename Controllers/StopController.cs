@@ -5,20 +5,20 @@ namespace BusTicketSystem.Controllers;
 
 [ApiController]
 [Route("[controller]")]
-public class StopController(StopService stopService) : ControllerBase
+public class StopController(StopService stopService, GraphService graphService) : ControllerBase
 {
-    private StopService _stopService = stopService;
+    private StopService _service = stopService;
 
     [HttpGet]
     public IActionResult Get()
     {
-        return Ok(_stopService.GetAll());
+        return Ok(_service.GetAll());
     }
 
     [HttpGet("{id}")]
     public IActionResult Get(int id)
     {
-        var stop = _stopService.Get(id);
+        var stop = _service.Get(id);
         if (stop is null)
         {
             return NotFound();
@@ -29,20 +29,20 @@ public class StopController(StopService stopService) : ControllerBase
     [HttpPost]
     public IActionResult Create(Models.Stop stop)
     {
-        return Ok(_stopService.Create(stop));
+        return Ok(_service.Create(stop));
     }
 
     [HttpPut]
     public IActionResult Update(Models.Stop stop)
     {
-        _stopService.Update(stop);
+        _service.Update(stop);
         return Ok();
     }
 
     [HttpDelete("{id}")]
     public IActionResult Delete(int id)
     {
-        _stopService.Delete(id);
+        _service.Delete(id);
         return Ok();
     }
 }

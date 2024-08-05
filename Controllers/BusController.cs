@@ -66,28 +66,28 @@ public class BusController(BusService service) : ControllerBase
     }
 
     // POST action
-    [HttpPost("{id}/add-route")]
-    public IActionResult AddRoute(int id, Models.Route route)
+    [HttpPost("/add-route")]
+    public IActionResult AddRoute(int id, int routeid)
     {
         var bus = _service.Get(id);
         if (bus is null)
         {
             return NotFound();
         }
-        _service.AssignRoute(id, route);
+        _service.AssignRoute(id, routeid);
         return NoContent();
     }
 
     // DELETE action
-    [HttpDelete("{id}/remove-route")]
-    public IActionResult RemoveRoute(int id, Models.Route route)
+    [HttpDelete("/remove-route")]
+    public IActionResult RemoveRoute(int id, int routeid)
     {
         var bus = _service.Get(id);
         if (bus is null)
         {
             return NotFound();
         }
-        _service.RemoveRoute(id, route);
+        _service.RemoveRoute(id, routeid);
         return NoContent();
     }
 }

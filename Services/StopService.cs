@@ -32,6 +32,7 @@ public class StopService(TicketSystemContext context)
 
     public void Delete(int id)
     {
+        Console.WriteLine("Deleting stop with id: " + id);
         var stop = _context.Stops.Find(id);
         if (stop is not null)
         {

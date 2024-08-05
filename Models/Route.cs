@@ -5,7 +5,6 @@ public class Route
     public int Id { get; set; }
     public string? Name { get; set; }
     public List<Stop>? Stops { get; set; }
-    public List<Edge>? Edges { get; set; }
 
     public bool Equals(Route route)
     {
@@ -13,6 +12,7 @@ public class Route
     }
     public List<Stop> AddStop(Stop stop)
     {
+
         if (Stops == null)
         {
             Stops = [];
@@ -25,6 +25,10 @@ public class Route
         }
 
         Stops.Add(stop);
+
+        var edge = new Edge { Start = Stops[Stops.Count - 2], End = Stops[Stops.Count - 1] };
+
+        Console.WriteLine("Adding stop to route " + Stops.Count);
         return Stops;
     }
     public List<Stop> RemoveStop(Stop stop)
@@ -37,62 +41,45 @@ public class Route
         {
             throw new InvalidOperationException("Cannot remove a stop from an empty list of stops.");
         }
-        if (!Stops.Exists(s => s.Equals(stop)))
+        foreach (var stopi in Stops)
         {
-            throw new InvalidOperationException("The stop you want to remove does not exist in this route.");
-        }
-        Stops.Remove(stop);
-        return Stops;
-    }
-    public List<Edge>? RemoveEdge(Edge edge)
-    {
-        if (Edges is null)
-        {
-            throw new InvalidOperationException("Cannot remove an edge from an null route.");
-        }
-        if (Edges.Count == 0)
-        {
-            throw new InvalidOperationException("Cannot remove an edge from an empty route.");
-        }
-        if (!Edges.Exists(e => e.Equals(edge)))
-        {
-            throw new InvalidOperationException("The edge you want to remove does not exist in this route.");
-        }
-        Edges.Remove(edge);
-        return Edges;
-    }
-    public List<Edge>? AddEdge(Edge edge)
-    {
-        var start = edge.Start;
-        var end = edge.End;
+            if (stopi.Id == stop.Id)
+            {
+                Stops.Remove(stopi);
+                return Stops;
 
-        if (start is null || end is null)
-        {
-            throw new InvalidOperationException("Cannot add an edge with a null start or end stop.");
+            }
         }
-
+        throw new InvalidOperationException("The stop you want to remove does not exist in this route.");
+    }
+    public List<Edge>? ConstructEdgesFromStops()
+    {
         if (Stops is null)
         {
-            throw new InvalidOperationException("Cannot add an edge to a route where stops is null.");
+            throw new InvalidOperationException("Cannot construct edges from null stops.");
         }
 
-        if (!Stops.Contains(start) || !Stops.Contains(end))
+        if (Stops.Count < 2)
         {
-            throw new InvalidOperationException("Cannot add an edge that does not connect two stops in this route.");
+            throw new InvalidOperationException("Cannot construct edges from less than two stops.");
         }
 
-        if (Edges is null)
+        var edges = new List<Edge>();
+
+        for (int i = 0; i < Stops.Count - 1; i++)
         {
-            Edges = [];
+            var edge = new Edge { Start = Stops[i], End = Stops[i + 1] };
+            edges.Add(edge);
         }
 
-        if (Edges.Count < 1)
+        return edges;
+    }
+    public bool ContainsStop(Stop stop)
+    {
+        if (Stops is null)
         {
-            Edges.Add(edge);
-            return Edges;
+            return false;
         }
-
-        Edges.Add(edge);
-        return Edges;
+        return Stops.Contains(stop);
     }
 }

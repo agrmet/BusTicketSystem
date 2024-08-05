@@ -18,11 +18,11 @@ builder.Services.AddIdentityCore<User>()
     .AddEntityFrameworkStores<UserDbContext>()
     .AddApiEndpoints();
 
+// Add database services
 builder.Services.AddDbContext<UserDbContext>(options =>
     options.UseSqlite(builder.Configuration.GetConnectionString("Users")));
-
-// Add database services
-builder.Services.AddSqlite<TicketSystemContext>(connectionString);
+builder.Services.AddDbContext<TicketSystemContext>(options =>
+    options.UseSqlite(connectionString));
 
 // Adding website services
 builder.Services.AddControllers();
@@ -34,25 +34,9 @@ builder.Services.AddSingleton<GraphService>();
 builder.Services.AddScoped<BusService>();
 builder.Services.AddScoped<RouteService>();
 builder.Services.AddScoped<StopService>();
-builder.Services.AddScoped<TicketService>();
 
 var app = builder.Build();
 
-// Verify that GraphService exists and can build a graph
-using (var scope = app.Services.CreateScope())
-{
-    var services = scope.ServiceProvider;
-
-    var graphService = services.GetRequiredService<GraphService>();
-    if (graphService is not null)
-    {
-        if (!graphService.GraphExists()) throw new Exception("Graph is null.");
-    }
-    else
-    {
-        throw new Exception("GraphService does not exist.");
-    }
-}
 
 // Configure the HTTP request pipeline.
 
@@ -68,6 +52,7 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
+
 
 app.CreateDbIfNotExists();
 

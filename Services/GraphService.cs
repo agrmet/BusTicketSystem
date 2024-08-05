@@ -8,9 +8,11 @@ public class GraphService
     private readonly TicketSystemContext _context;
     private Graph _graph;
 
-    public GraphService(TicketSystemContext context)
+    public GraphService(IServiceProvider serviceProvider)
     {
-        _context = context;
+        Console.WriteLine("GraphService created.");
+        using var scope = serviceProvider.CreateScope();
+        _context = scope.ServiceProvider.GetRequiredService<TicketSystemContext>();
         _graph = BuildGraph();
     }
 
@@ -21,6 +23,7 @@ public class GraphService
         var routes = _context.Routes.ToHashSet();
         var graph = new Graph(stops, edges, routes);
 
+        Console.WriteLine("Graph built.");
         return graph;
     }
 
@@ -29,29 +32,37 @@ public class GraphService
         return _graph is not null;
     }
 
-    public void AddEdge(Edge edge)
+    public void AddEdge(Edge edge, int routeId)
     {
-        _graph.AddEdge(edge);
+        _graph.AddEdge(edge, routeId);
     }
 
-    public void RemoveEdge(Edge edge)
+    public void RemoveEdge(Edge edge, int routeId)
     {
-        _graph.RemoveEdge(edge);
+        _graph.RemoveEdge(edge, routeId);
     }
 
-    public void AddNode(Stop node)
+    public void AddNode(int stopId)
     {
+        var node = _context.Stops.Find(stopId) ?? throw new InvalidOperationException("Cannot find stop in the database.");
         _graph.AddNode(node);
     }
 
-    public void RemoveNode(Stop node)
+    public void RemoveNode(int stopId)
     {
+        var node = _context.Stops.Find(stopId) ?? throw new InvalidOperationException("Cannot find stop in the database.");
         _graph.RemoveNode(node);
     }
 
-    public bool ContainsNode(Stop node)
+    public bool ContainsNode(int stopId)
     {
+        var node = _context.Stops.Find(stopId) ?? throw new InvalidOperationException("Cannot find stop in the database.");
         return _graph.ContainsNode(node);
+    }
+
+    public void ExtractEdgesFromRoute(Models.Route route)
+    {
+        _graph.ExtractEdgesFromRoute(route);
     }
 
 }

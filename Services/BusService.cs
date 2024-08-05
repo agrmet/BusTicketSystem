@@ -1,7 +1,6 @@
 using BusTicketSystem.Models;
 using BusTicketSystem.Data;
 using Microsoft.EntityFrameworkCore;
-using System.Text.Json.Serialization.Metadata;
 
 namespace BusTicketSystem.Services;
 
@@ -13,8 +12,6 @@ public class BusService(TicketSystemContext context)
     {
         return _context.Buses
             .Include(b => b.Routes)
-                .ThenInclude(r => r.Edges)
-            .Include(b => b.Routes)
                 .ThenInclude(r => r.Stops)
             .AsNoTracking()
             .ToList();
@@ -24,10 +21,18 @@ public class BusService(TicketSystemContext context)
     {
         return _context.Buses
         .Include(b => b.Routes)
-            .ThenInclude(r => r.Edges)
+            .ThenInclude(r => r.Stops)
         .AsNoTracking()
         .SingleOrDefault(b => b.Id == id);
 
+    }
+
+    public Bus? GetWithTracking(int id)
+    {
+        return _context.Buses
+        .Include(b => b.Routes)
+            .ThenInclude(r => r.Stops)
+        .SingleOrDefault(b => b.Id == id);
     }
     public Bus Create(Bus newBus)
     {
@@ -42,23 +47,44 @@ public class BusService(TicketSystemContext context)
     }
     public void Delete(int id)
     {
-        var bus = _context.Buses.Find(id);
+        var bus = GetWithTracking(id);
         if (bus is not null)
         {
+            bus.Routes?.Clear();
+            _context.Update(bus);
             _context.Buses.Remove(bus);
             _context.SaveChanges();
         }
     }
-    public List<Models.Route>? AssignRoute(int id, Models.Route route)
+    public List<Models.Route>? AssignRoute(int id, int routeid)
     {
-        var bus = Get(id);
+        var bus = _context.Buses.Find(id);
 
-        return bus?.AssignRoute(route);
+        var route = _context.Routes.Find(routeid);
+
+        if (bus is null || route is null)
+        {
+            throw new Exception("Bus or Route not found in database.");
+        }
+        bus.AssignRoute(route);
+        Update(bus);
+        return bus.Routes;
     }
-    public List<Models.Route>? RemoveRoute(int id, Models.Route route)
+    public List<Models.Route>? RemoveRoute(int id, int routeid)
     {
-        var bus = Get(id);
+        var bus = _context.Buses.Find(id);
 
-        return bus?.RemoveRoute(route);
+        var route = _context.Routes.Find(routeid);
+
+        if (bus is null || route is null)
+        {
+            throw new Exception("Bus or Route not found in database.");
+        }
+
+        bus.RemoveRoute(routeid);
+        Update(bus);
+
+        // Return the updated routes collection
+        return bus.Routes;
     }
 }
