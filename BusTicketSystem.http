@@ -1,16 +1,1 @@
 @BusTicketSystem_HostAddress = http://localhost:5001
-
-GET {{BusTicketSystem_HostAddress}}/bus/
-Accept: application/json
-
-###
-
-GET {{BusTicketSystem_HostAddress}}/stop/
-Accept: application/json
-
-###
-
-GET {{BusTicketSystem_HostAddress}}/route/
-Accept: application/json
-
-###
