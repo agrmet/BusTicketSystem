@@ -11,7 +11,7 @@ public static class DbInitializer
         && context.Stops.Any()
         && context.Edges.Any())
         {
-            return; //DB has been seeded
+            return;
         }
         // Stops for long range buses from Sweden to Macedonia, Albania, Kosovo
         var stops = new List<Stop>

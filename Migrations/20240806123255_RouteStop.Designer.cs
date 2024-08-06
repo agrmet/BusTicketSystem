@@ -3,6 +3,7 @@ using System;
 using BusTicketSystem.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,27 +11,14 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BusTicketSystem.Migrations
 {
     [DbContext(typeof(TicketSystemContext))]
-    partial class TicketSystemContextModelSnapshot : ModelSnapshot
+    [Migration("20240806123255_RouteStop")]
+    partial class RouteStop
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "8.0.7");
-
-            modelBuilder.Entity("BusRoute", b =>
-                {
-                    b.Property<int>("BusId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("RouteId")
-                        .HasColumnType("INTEGER");
-
-                    b.HasKey("BusId", "RouteId");
-
-                    b.HasIndex("RouteId");
-
-                    b.ToTable("BusRoute");
-                });
 
             modelBuilder.Entity("BusTicketSystem.Data.Identity.User", b =>
                 {
@@ -128,10 +116,15 @@ namespace BusTicketSystem.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
+                    b.Property<int?>("BusId")
+                        .HasColumnType("INTEGER");
+
                     b.Property<string>("Name")
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("BusId");
 
                     b.ToTable("Routes");
                 });
@@ -200,21 +193,6 @@ namespace BusTicketSystem.Migrations
                     b.ToTable("RouteStop");
                 });
 
-            modelBuilder.Entity("BusRoute", b =>
-                {
-                    b.HasOne("BusTicketSystem.Models.Bus", null)
-                        .WithMany()
-                        .HasForeignKey("BusId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("BusTicketSystem.Models.Route", null)
-                        .WithMany()
-                        .HasForeignKey("RouteId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("BusTicketSystem.Models.Edge", b =>
                 {
                     b.HasOne("BusTicketSystem.Models.Stop", "End")
@@ -228,6 +206,13 @@ namespace BusTicketSystem.Migrations
                     b.Navigation("End");
 
                     b.Navigation("Start");
+                });
+
+            modelBuilder.Entity("BusTicketSystem.Models.Route", b =>
+                {
+                    b.HasOne("BusTicketSystem.Models.Bus", null)
+                        .WithMany("Routes")
+                        .HasForeignKey("BusId");
                 });
 
             modelBuilder.Entity("BusTicketSystem.Models.Ticket", b =>
@@ -264,6 +249,11 @@ namespace BusTicketSystem.Migrations
                         .HasForeignKey("StopId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("BusTicketSystem.Models.Bus", b =>
+                {
+                    b.Navigation("Routes");
                 });
 #pragma warning restore 612, 618
         }

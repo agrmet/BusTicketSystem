@@ -30,7 +30,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 // Adding custom services
-builder.Services.AddSingleton<GraphService>();
+//builder.Services.AddSingleton<GraphService>();
 builder.Services.AddScoped<BusService>();
 builder.Services.AddScoped<RouteService>();
 builder.Services.AddScoped<StopService>();
@@ -52,7 +52,6 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
-
 
 app.CreateDbIfNotExists();
 

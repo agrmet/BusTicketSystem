@@ -58,13 +58,17 @@ public class BusService(TicketSystemContext context)
     }
     public List<Models.Route>? AssignRoute(int id, int routeid)
     {
-        var bus = _context.Buses.Find(id);
+        var bus = GetWithTracking(id);
 
         var route = _context.Routes.Find(routeid);
 
-        if (bus is null || route is null)
+        if (bus is null)
         {
-            throw new Exception("Bus or Route not found in database.");
+            throw new Exception("Bus not found in database.");
+        }
+        if (route is null)
+        {
+            throw new Exception("Route not found in database.");
         }
         bus.AssignRoute(route);
         Update(bus);
@@ -72,7 +76,7 @@ public class BusService(TicketSystemContext context)
     }
     public List<Models.Route>? RemoveRoute(int id, int routeid)
     {
-        var bus = _context.Buses.Find(id);
+        var bus = GetWithTracking(id);
 
         var route = _context.Routes.Find(routeid);
 
@@ -81,7 +85,7 @@ public class BusService(TicketSystemContext context)
             throw new Exception("Bus or Route not found in database.");
         }
 
-        bus.RemoveRoute(routeid);
+        bus.RemoveRoute(route);
         Update(bus);
 
         // Return the updated routes collection

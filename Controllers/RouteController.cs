@@ -6,16 +6,9 @@ namespace BusTicketSystem.Controllers;
 
 [ApiController]
 [Route("[controller]")]
-public class RouteController : ControllerBase
+public class RouteController(RouteService routeService) : ControllerBase
 {
-    private RouteService _service;
-    private GraphService _graphService;
-
-    public RouteController(RouteService routeService, GraphService graphService)
-    {
-        _service = routeService;
-        _graphService = graphService;
-    }
+    private RouteService _service = routeService;
 
     [HttpGet]
     public ActionResult<List<Models.Route>> Get() => _service.GetAll().ToList();

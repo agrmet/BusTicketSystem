@@ -5,7 +5,7 @@ namespace BusTicketSystem.Controllers;
 
 [ApiController]
 [Route("[controller]")]
-public class StopController(StopService stopService, GraphService graphService) : ControllerBase
+public class StopController(StopService stopService) : ControllerBase
 {
     private StopService _service = stopService;
 

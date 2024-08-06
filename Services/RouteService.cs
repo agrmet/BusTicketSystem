@@ -22,6 +22,13 @@ public class RouteService(TicketSystemContext context)
         .SingleOrDefault(r => r.Id == id);
 
     }
+
+    public Models.Route? GetWithTracking(int id)
+    {
+        return _context.Routes
+        .Include(r => r.Stops)
+        .SingleOrDefault(r => r.Id == id);
+    }
     public Models.Route Create(Models.Route newRoute)
     {
         if (newRoute.Stops?.Count < 2)
@@ -71,7 +78,7 @@ public class RouteService(TicketSystemContext context)
     }
     public List<Stop>? AddStop(int id, int stopId)
     {
-        var route = _context.Routes.Find(id);
+        var route = GetWithTracking(id);
 
         if (route is null)
         {
@@ -90,7 +97,7 @@ public class RouteService(TicketSystemContext context)
     }
     public List<Stop>? RemoveStop(int id, int stopId)
     {
-        var route = _context.Routes.Find(id);
+        var route = GetWithTracking(id);
         if (route is null)
         {
             throw new InvalidOperationException("Route not found.");

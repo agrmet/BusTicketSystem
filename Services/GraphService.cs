@@ -16,7 +16,7 @@ public class GraphService
         _graph = BuildGraph();
     }
 
-    private Graph BuildGraph()
+    public Graph BuildGraph()
     {
         var edges = _context.Edges.ToHashSet();
         var stops = _context.Stops.ToHashSet();
